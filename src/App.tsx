@@ -1,14 +1,15 @@
-import { useState } from "react"
+import AuthGateway from "./infra/gateways/AuthGateway"
+import AxiosAdapter from "./infra/http/AxiosAdapter"
+import Signup from "./ui/pages/Signup"
+
+const authGateway = new AuthGateway(new AxiosAdapter())
 
 function App() {
 
-  const [count, setCount] = useState(0)
+  
 
   return (
-    <div>
-      <button title="add-count" onClick={() => {setCount(count+1)}}>Adicionar um</button>
-      <p title="counter">{count}</p>
-    </div>
+    <Signup authGateway={authGateway}/>
   )
 }
 
