@@ -1,9 +1,11 @@
 import { describe, expect, test } from "vitest";
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import IAuthGateway, { AuthGatewayDTO } from '../../src/domain/gateways/auth'
+import IAuthGateway from '../../src/domain/gateways/auth'
+import '@testing-library/jest-dom'
 import React from "react";
 import Signup from '../../src/ui/pages/Signup/index'
 import User from "../../src/domain/entities/user/user";
+import { BrowserRouter } from "react-router-dom";
 
 describe("Signup related tests", () => {
     test("should create an user", async () => {  
@@ -13,7 +15,7 @@ describe("Signup related tests", () => {
             } 
         }
 
-        render(<Signup authGateway={AuthGateway}/>)
+        render(<Signup authGateway={AuthGateway}/>, {wrapper: BrowserRouter})
 
         const name = screen.getByTitle<HTMLInputElement>('name')
         const email = screen.getByTitle<HTMLInputElement>('email')
@@ -43,7 +45,9 @@ describe("Signup related tests", () => {
                 return {code: 201}
             } 
         }
-        render(<Signup authGateway={AuthGateway}/>)
+
+        render(<Signup authGateway={AuthGateway}/>, {wrapper: BrowserRouter})
+        
         const name = screen.getByTitle<HTMLInputElement>('name')
         const email = screen.getByTitle<HTMLInputElement>('email')
         name.value = "John"

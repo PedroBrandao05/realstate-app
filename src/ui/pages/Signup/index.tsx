@@ -1,6 +1,10 @@
 import { FormEvent, useRef, useState } from "react";
 import IAuthGateway from "../../../domain/gateways/auth";
 import User from "../../../domain/entities/user/user";
+import * as S from './styled'
+import Input, { IInputConfiguration } from "../../shared/atoms/Input";
+import Button from "../../shared/atoms/Button";
+import OrDivider from "../../shared/atoms/OrDivider";
 
 
 export default function Signup({authGateway}: {authGateway: IAuthGateway}){
@@ -10,6 +14,7 @@ export default function Signup({authGateway}: {authGateway: IAuthGateway}){
     const creciInput = useRef<HTMLInputElement>(null)
     const phoneInput = useRef<HTMLInputElement>(null)
     const passwordInput = useRef<HTMLInputElement>(null)
+    const [error, setError] = useState(false)
 
     const [message, setMessage] = useState("")
 
@@ -27,28 +32,66 @@ export default function Signup({authGateway}: {authGateway: IAuthGateway}){
         const password = passwordInput.current.value
         const {status, response} = await authGateway.createUser(User.create(name, email, creci, phone, password))
         if (status !== 201){
+            setError(true)
             setMessage(response.message)
         } else {
             setMessage("Usuário Cadastrado")
         }
     }
+
+    const inputs : IInputConfiguration[] = [
+        {
+            title: "name",
+            id: "name",
+            type: "text",
+            label: "Nome",
+            reference: nameInput
+        },
+        {
+            title: "email",
+            id: "email",
+            type: "email",
+            label: "Email",
+            reference: emailInput
+        },
+        {
+            title: "phone",
+            id: "phone",
+            type: "text",
+            label: "Celular",
+            reference: phoneInput
+        },
+        {
+            title: "creci",
+            id: "creci",
+            type: "text",
+            label: "Creci",
+            reference: creciInput
+        },
+        {
+            title: "password",
+            id: "password",
+            type: "password",
+            label: "Senha",
+            reference: passwordInput
+        },
+    ] 
     
     return (
-    <div>
-        <form style={{display: "flex", flexDirection: "column"}}>
-            <label htmlFor="name">Nome</label>
-            <input ref={nameInput} id="name" title="name" type="text" />
-            <label htmlFor="email">Email</label>
-            <input ref={emailInput} id="email" title="email" type="email" />
-            <label htmlFor="creci">Creci</label>
-            <input ref={creciInput} id="creci" title="creci" type="text" />
-            <label htmlFor="phone">Telefone</label>
-            <input ref={phoneInput} id="phone" title="phone" type="text" />
-            <label htmlFor="password">Senha</label>
-            <input ref={passwordInput} id="password" title="password" type="password" />
-            <button type="submit" title="submit" onClick={createUser}>Cadastrar</button>
-        </form>
-        <p title="response-message">{message}</p>
-    </div>
+    <S.Wrapper>
+        <S.Title>Realizar Cadastro</S.Title>
+        <S.Form>
+            {inputs.map((configuration, index) => {
+                return (<Input config={configuration} key={index}/>)
+            })}
+            <Button config={{type: "submit", title: "submit", action: createUser, text: "Finalizar Cadastro"}}/>
+        </S.Form>
+        <S.BottomDiv>
+            <OrDivider />
+            <S.LinkToSignin to="/">Já tenho uma conta</S.LinkToSignin>
+        </S.BottomDiv>
+        <S.ResponseText error={error} title="response-message">{message}</S.ResponseText>
+        <S.WavesBottom />
+    </S.Wrapper>
     )
 }
