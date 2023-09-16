@@ -1,4 +1,4 @@
-import AuthGateway from "./infra/gateways/AuthGateway"
+import AuthGateway from "./infra/gateways/auth/AuthGatewayHTTP"
 import AxiosAdapter from "./infra/http/AxiosAdapter"
 import { GlobalStyles } from "./ui/global/styles"
 import Signup from "./ui/pages/Signup"

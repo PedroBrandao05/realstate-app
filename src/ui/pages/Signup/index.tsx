@@ -1,5 +1,5 @@
 import { FormEvent, useRef, useState } from "react";
-import IAuthGateway from "../../../domain/gateways/auth";
+import IAuthGateway from "../../../infra/gateways/auth/AuthGateway";
 import User from "../../../domain/entities/user/user";
 import * as S from './styled'
 import Input, { IInputConfiguration } from "../../shared/atoms/Input";
@@ -17,6 +17,43 @@ export default function Signup({authGateway}: {authGateway: IAuthGateway}){
     const [error, setError] = useState(false)
 
     const [message, setMessage] = useState("")
+    const inputs : IInputConfiguration[] = [
+            {
+                title: "name",
+                id: "name",
+                type: "text",
+                label: "Nome",
+                reference: nameInput
+            },
+            {
+                title: "email",
+                id: "email",
+                type: "email",
+                label: "Email",
+                reference: emailInput
+            },
+            {
+                title: "phone",
+                id: "phone",
+                type: "text",
+                label: "Celular",
+                reference: phoneInput
+            },
+            {
+                title: "creci",
+                id: "creci",
+                type: "text",
+                label: "Creci",
+                reference: creciInput
+            },
+            {
+                title: "password",
+                id: "password",
+                type: "password",
+                label: "Senha",
+                reference: passwordInput
+            },
+        ] 
 
     const createUser = async (event: FormEvent) => {
         event.preventDefault()
@@ -38,44 +75,6 @@ export default function Signup({authGateway}: {authGateway: IAuthGateway}){
             setMessage("Usuário Cadastrado")
         }
     }
-
-    const inputs : IInputConfiguration[] = [
-        {
-            title: "name",
-            id: "name",
-            type: "text",
-            label: "Nome",
-            reference: nameInput
-        },
-        {
-            title: "email",
-            id: "email",
-            type: "email",
-            label: "Email",
-            reference: emailInput
-        },
-        {
-            title: "phone",
-            id: "phone",
-            type: "text",
-            label: "Celular",
-            reference: phoneInput
-        },
-        {
-            title: "creci",
-            id: "creci",
-            type: "text",
-            label: "Creci",
-            reference: creciInput
-        },
-        {
-            title: "password",
-            id: "password",
-            type: "password",
-            label: "Senha",
-            reference: passwordInput
-        },
-    ] 
     
     return (
     <S.Wrapper>

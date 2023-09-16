@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import IAuthGateway from '../../src/domain/gateways/auth'
+import IAuthGateway from '../../src/infra/gateways/auth/AuthGateway'
 import '@testing-library/jest-dom'
 import React from "react";
 import Signup from '../../src/ui/pages/Signup/index'
@@ -12,7 +12,10 @@ describe("Signup related tests", () => {
         const AuthGateway : IAuthGateway = {
             createUser: async (input: User) => {
                 return {status: 201}
-            } 
+            }, 
+            signin: async (input: {email: string, password: string}) => {
+                return {status: 200}
+            }
         }
 
         render(<Signup authGateway={AuthGateway}/>, {wrapper: BrowserRouter})
@@ -43,7 +46,10 @@ describe("Signup related tests", () => {
         const AuthGateway : IAuthGateway = {
             createUser: async (input: User) => {
                 return {code: 201}
-            } 
+            },
+            signin: async (input: {email: string, password: string}) => {
+                return {status: 200}
+            }
         }
 
         render(<Signup authGateway={AuthGateway}/>, {wrapper: BrowserRouter})

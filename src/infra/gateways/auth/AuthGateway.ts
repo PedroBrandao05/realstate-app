@@ -1,7 +1,8 @@
-import User from "../entities/user/user"
+import User from "../../../domain/entities/user/user"
 
 export default interface IAuthGateway {
     createUser (input: User): Promise<any>
+    signin (input: AuthGatewayDTO.SigninInput): Promise<any>
 }
 
 export namespace AuthGatewayDTO {
